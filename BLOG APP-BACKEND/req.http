@@ -1,0 +1,110 @@
+###user register
+POST http://localhost:4000/user-api/users
+Content-Type: application/json
+
+{
+    "firstName": "Shree",
+    "lastName": "user",
+    "email": "shreeja12@gmail.com",
+    "password": "user@1234",
+    "profileImageUrl": "https://example.com/avatars.png"
+}
+
+###author register
+POST http://localhost:4000/author-api/users
+Content-Type: application/json
+
+{
+    "firstName": "pradyuth",
+    "lastName": "author",
+    "email": "pradyuth08@gmail.com",
+    "password": "author@1234",
+    "profileImageUrl": "https://exampleone.com/avatars.png"
+}
+
+###user login
+POST http://localhost:4000/common-api/login
+Content-Type: application/json
+
+{
+    "email": "shreeja12@gmail.com",
+    "password": "user@1234"
+}
+
+###author login
+POST http://localhost:4000/common-api/login
+Content-Type: application/json
+
+{
+    "email": "pradyuth08@gmail.com",
+    "password": "author@1234"
+}
+
+###create article(author)
+POST http://localhost:4000/author-api/articles
+Content-Type: application/json
+
+{
+    "author":"698aac84c5fcc458b9ac84ad",
+    "title":"test1 article",
+    "category":"programming",
+    "content":"content of test1 article"
+
+}
+
+###read articles by author
+GET http://localhost:4000/author-api/articles/698aac84c5fcc458b9ac84ad
+
+###update article by author
+PUT http://localhost:4000/author-api/articles
+Content-Type: application/json
+
+{
+    "author":"698aac84c5fcc458b9ac84ad",
+    "articleId":"698aadb689f3ecb0c8657c59",
+    "title":"test2 article",
+    "category":"programming in c",
+    "content":"content of test2 article"
+
+}
+
+###delete article
+PUT http://localhost:4000/author-api/articles/delete
+Content-Type: application/json
+
+{
+    "articleId": "698aadb689f3ecb0c8657c59"
+}
+
+###logout
+GET http://localhost:4000/common-api/logout
+
+###read articles
+GET http://localhost:4000/user-api/articles
+
+###comments fro article
+POST http://localhost:4000/user-api/articles/698aadb689f3ecb0c8657c59
+Content-Type: application/json
+
+{
+    "comment":"Informative article"
+}
+
+###test 
+GET http://localhost:4000/test
+
+###change pwd
+PUT http://localhost:4000/common-api/change-password
+Content-Type: application/json
+
+{
+    "email":"shreeja12@gmail.com",
+    "currentPassword":"user@1234",
+    "newPassword":"user@12"
+}
+
+###blocking user
+POST http://localhost:4000/admin-api/admin/block-user/698aac81c5fcc458b9ac84ab
+
+###unblock user
+POST http://localhost:4000/admin-api/admin/unblock-user/698aac81c5fcc458b9ac84ab
