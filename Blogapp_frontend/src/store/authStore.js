@@ -3,8 +3,8 @@ import axios from "axios";
 
 export const useAuth = create((set) => ({
   currentUser: null,
-  loading: false,         // only for login / logout button spinner
-  isCheckingAuth: true,   // only for the initial page-load check
+  loading: false,
+  isCheckingAuth: true,
   isAuthenticated: false,
   error: null,
 
@@ -12,14 +12,14 @@ export const useAuth = create((set) => ({
     try {
       set({ loading: true, error: null });
       const res = await axios.post(
-        "http://localhost:4000/common-api/login",
+        `${import.meta.env.VITE_API_URL}/common-api/login`,
         userCredObj,
         { withCredentials: true }
       );
       set({
         loading: false,
         isAuthenticated: true,
-        currentUser: res.data.payload, // full user object from DB
+        currentUser: res.data.payload,
       });
     } catch (err) {
       set({
@@ -35,7 +35,7 @@ export const useAuth = create((set) => ({
     try {
       set({ loading: true, error: null });
       await axios.get(
-        "http://localhost:4000/common-api/logout",
+        `${import.meta.env.VITE_API_URL}/common-api/logout`,
         { withCredentials: true }
       );
     } catch (err) {
@@ -45,22 +45,19 @@ export const useAuth = create((set) => ({
     }
   },
 
-  // Called once in RootLayout on mount
   checkAuth: async () => {
     set({ isCheckingAuth: true });
     try {
       const res = await axios.get(
-        "http://localhost:4000/common-api/check-auth",
+        `${import.meta.env.VITE_API_URL}/common-api/check-auth`,
         { withCredentials: true }
       );
-      // payload is the full DB user — firstName, profileImageUrl, _id etc. all present
       set({
         currentUser: res.data.payload,
         isAuthenticated: true,
         isCheckingAuth: false,
       });
     } catch {
-      // not logged in — perfectly normal on first visit
       set({
         currentUser: null,
         isAuthenticated: false,
