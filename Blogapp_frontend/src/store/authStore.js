@@ -9,41 +9,40 @@ export const useAuth = create((set) => ({
   error: null,
 
   login: async (userCredObj) => {
-    try {
-      set({ loading: true, error: null });
+  try {
+    set({ loading: true, error: null });
 
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/common-api/login`,
-        userCredObj
-      );
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/common-api/login`,
+      userCredObj
+    );
 
-      console.log(res.data);
+    console.log(res.data);
 
-      // adjust token path if needed after checking console
-      const token =
-        res.data.token ||
-        res.data.payload?.token ||
-        res.data.data?.token;
+    const token =
+      res.data.token ||
+      res.data.payload?.token ||
+      res.data.data?.token;
 
-      if (token) {
-        localStorage.setItem("token", token);
-      }
-
-      set({
-        loading: false,
-        isAuthenticated: true,
-        currentUser: res.data.payload || res.data.user,
-      });
-
-    } catch (err) {
-      set({
-        loading: false,
-        isAuthenticated: false,
-        currentUser: null,
-        error: err.response?.data?.error || "Login failed",
-      });
+    if (token) {
+      localStorage.setItem("token", token);
     }
-  },
+
+    set({
+      loading: false,
+      isAuthenticated: true,
+      currentUser: res.data.payload || res.data.user,
+    });
+
+  } catch (err) {
+    set({
+      loading: false,
+      isAuthenticated: false,
+      currentUser: null,
+      error: err.response?.data?.error || "Login failed",
+    });
+  }
+},
 
   logout: async () => {
     try {
