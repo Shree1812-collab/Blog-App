@@ -13,9 +13,9 @@ export const useAuth = create((set) => ({
       set({ loading: true, error: null });
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/common-api/login`,
-        userCredObj,
-        { withCredentials: true }
+        userCredObj
       );
+      localStorage.setItem("token", res.data.token);
       set({
         loading: false,
         isAuthenticated: true,
@@ -34,13 +34,11 @@ export const useAuth = create((set) => ({
   logout: async () => {
     try {
       set({ loading: true, error: null });
-      await axios.get(
-        `${import.meta.env.VITE_API_URL}/common-api/logout`,
-        { withCredentials: true }
-      );
+      await axios.get(`${import.meta.env.VITE_API_URL}/common-api/logout`);
     } catch (err) {
-      // ignore API errors — always clear state
+      // ignore
     } finally {
+      localStorage.removeItem("token");
       set({ loading: false, isAuthenticated: false, currentUser: null });
     }
   },
@@ -48,9 +46,14 @@ export const useAuth = create((set) => ({
   checkAuth: async () => {
     set({ isCheckingAuth: true });
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        set({ currentUser: null, isAuthenticated: false, isCheckingAuth: false });
+        return;
+      }
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/common-api/check-auth`,
-        { withCredentials: true }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       set({
         currentUser: res.data.payload,
@@ -58,11 +61,8 @@ export const useAuth = create((set) => ({
         isCheckingAuth: false,
       });
     } catch {
-      set({
-        currentUser: null,
-        isAuthenticated: false,
-        isCheckingAuth: false,
-      });
+      localStorage.removeItem("token");
+      set({ currentUser: null, isAuthenticated: false, isCheckingAuth: false });
     }
   },
 }));

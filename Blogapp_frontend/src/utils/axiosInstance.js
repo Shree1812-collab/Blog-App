@@ -1,10 +1,16 @@
 import axios from "axios";
 
-// Single axios instance for the entire app
-// Change baseURL here once when deploying to production
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true
-})
+});
+
+// attach token from localStorage to every request
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default axiosInstance;
