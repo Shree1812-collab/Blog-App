@@ -8,10 +8,10 @@ import AuthorProfile from "./components/AuthorProfile";
 import ArticleByID from "./components/ArticleByID";
 import AuthorArticles from "./components/AuthorArticles";
 import WriteArticle from "./components/WriteArticle";
-import EditArticle from "./components/EditArticleForm";
+import EditArticlePage from "./components/EditArticlePage";
 import AdminDashboard from "./components/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ErrorBoundary from "./components/ErrorBoundary"; // Ensure this exists!
+import ErrorBoundary from "./components/ErrorBoundary"; // 
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -65,7 +65,7 @@ function App() {
           path: "edit-article/:id",
           element: (
             <ProtectedRoute allowedRoles={["AUTHOR"]}>
-              <EditArticle />
+              <EditArticlePage />
             </ProtectedRoute>
           ),
         },
