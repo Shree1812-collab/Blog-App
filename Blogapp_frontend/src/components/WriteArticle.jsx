@@ -19,7 +19,7 @@ import { useAuth } from "../store/authStore";
 function WriteArticle() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const currentUser=useAuth(state=>state.currentUser)
+  const currentUser = useAuth(state => state.currentUser);
 
   const {
     register,
@@ -30,20 +30,16 @@ function WriteArticle() {
 
   const submitArticle = async (articleObj) => {
     setLoading(true);
-
-    //add authorId to articleObj
-    articleObj.author=currentUser._id;
+    articleObj.author = currentUser._id;
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/common-api/article`,
+        `${import.meta.env.VITE_API_URL}/author-api/articles`,
         articleObj,
         { withCredentials: true }
       );
 
       toast.success("Article published successfully!");
-
       reset();
-
       navigate("/author-profile/articles");
 
     } catch (err) {
@@ -59,10 +55,8 @@ function WriteArticle() {
 
       <form onSubmit={handleSubmit(submitArticle)}>
 
-        {/* Title */}
         <div className={formGroup}>
           <label className={labelClass}>Title</label>
-
           <input
             type="text"
             className={inputClass}
@@ -75,16 +69,11 @@ function WriteArticle() {
               },
             })}
           />
-
-          {errors.title && (
-            <p className={errorClass}>{errors.title.message}</p>
-          )}
+          {errors.title && <p className={errorClass}>{errors.title.message}</p>}
         </div>
 
-        {/* Category */}
         <div className={formGroup}>
           <label className={labelClass}>Category</label>
-
           <select
             className={inputClass}
             {...register("category", {
@@ -97,16 +86,11 @@ function WriteArticle() {
             <option value="ai">AI</option>
             <option value="web-development">Web Development</option>
           </select>
-
-          {errors.category && (
-            <p className={errorClass}>{errors.category.message}</p>
-          )}
+          {errors.category && <p className={errorClass}>{errors.category.message}</p>}
         </div>
 
-        {/* Content */}
         <div className={formGroup}>
           <label className={labelClass}>Content</label>
-
           <textarea
             rows="8"
             className={inputClass}
@@ -119,20 +103,15 @@ function WriteArticle() {
               },
             })}
           />
-
-          {errors.content && (
-            <p className={errorClass}>{errors.content.message}</p>
-          )}
+          {errors.content && <p className={errorClass}>{errors.content.message}</p>}
         </div>
 
-        {/* Submit */}
         <button className={submitBtn} type="submit" disabled={loading}>
           {loading ? "Publishing..." : "Publish Article"}
         </button>
 
-        {loading && (
-          <p className={loadingClass}>Publishing article...</p>
-        )}
+        {loading && <p className={loadingClass}>Publishing article...</p>}
+
       </form>
     </div>
   );
