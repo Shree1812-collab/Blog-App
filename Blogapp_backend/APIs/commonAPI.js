@@ -10,11 +10,6 @@ export const commonRouter = exp.Router();
 commonRouter.post("/login", async (req, res, next) => {
   try {
     const { token, user } = await login(req.body);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,        // required for HTTPS
-      sameSite: "none",    // required for cross-domain cookies
-    });
     res.status(200).json({ message: "login success", payload: user });
   } catch (err) {
     next(err);
@@ -41,11 +36,6 @@ commonRouter.get(
 
 // Logout
 commonRouter.get("/logout", (req, res) => {
-  res.clearCookie("token", {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none",
-});
   res.status(200).json({ message: "logged out!" });
 });
 
