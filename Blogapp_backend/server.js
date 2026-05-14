@@ -15,7 +15,10 @@ const app = exp()
 
 // allow cross origin requests
 app.use(cors({
-  origin: ["http://localhost:5173"],
+  origin: [
+    "http://localhost:5173",
+    "https://blog-app-d1yk.vercel.app/"
+  ],
   credentials: true
 }))
 
@@ -37,8 +40,10 @@ const connectDB = async () => {
     await connect(process.env.DB_URL)
     console.log("Connected to DB...")
 
-    app.listen(process.env.PORT, () =>
-      console.log(`Server started on port ${process.env.PORT}`)
+    const PORT = process.env.PORT || 5000
+
+    app.listen(PORT, () =>
+      console.log(`Server started on port ${PORT}`)
     )
 
   } catch (err) {
