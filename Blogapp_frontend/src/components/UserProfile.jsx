@@ -2,7 +2,7 @@ import { useAuth } from "../store/authStore";
 import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 
 import {
   articleGrid,
@@ -35,10 +35,7 @@ function UserProfile() {
     const getArticles = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/user-api/articles`,
-          { withCredentials: true }
-        );
+        const res = await axiosInstance.get("/user-api/articles");
         setArticles(res.data.payload);
       } catch (err) {
         setError(err.response?.data?.error || "Something went wrong");
