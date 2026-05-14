@@ -28,12 +28,11 @@ function ArticleByID() {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
-    // We fetch every time to ensure we get the populated comments from the backend
     const getArticle = async () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:4000/user-api/articles/${id}`,
+          `${import.meta.env.VITE_API_URL}/user-api/articles/${id}`,
           { withCredentials: true }
         );
         setArticle(res.data.payload);
@@ -65,12 +64,11 @@ function ArticleByID() {
       };
 
       const res = await axios.put(
-        "http://localhost:4000/user-api/articles",
+        `${import.meta.env.VITE_API_URL}/user-api/articles`,
         commentPayload,
         { withCredentials: true }
       );
 
-      // The backend response now contains the fully populated article
       setArticle(res.data.payload);
       setComment("");
     } catch (err) {
@@ -83,7 +81,7 @@ function ArticleByID() {
     if (!window.confirm("Are you sure?")) return;
     try {
       await axios.patch(
-        "http://localhost:4000/author-api/articles/delete",
+        `${import.meta.env.VITE_API_URL}/author-api/articles/delete`,
         { articleId: id },
         { withCredentials: true }
       );
@@ -107,26 +105,19 @@ function ArticleByID() {
       <h1 className={`${pageTitleClass} mt-3 mb-4`}>{article.title}</h1>
 
       <div className={`${mutedText} flex gap-4 mb-8`}>
-        {/* Author Population Check */}
         <span>✍️ {article.author?.firstName || "Author"}</span>
         <span>{formatDate(article.createdAt)}</span>
       </div>
 
       <div className={articleBody}>{article.content}</div>
 
-      {/* comment display section */}
       <div className="mt-10 border-t pt-6">
         <h3 className="text-xl font-bold mb-4">Comments</h3>
         <div className="space-y-4 mb-6">
           {article.comments?.map((c, index) => {
-            // Check your browser console to see if 'user' is an object or a string
-            console.log(`Comment ${index} user data:`, c.user);
-            
             return (
               <div key={index} className="p-3 bg-gray-50 rounded border">
                 <p className="text-sm font-bold text-blue-600">
-                  {/* If backend populated correctly, c.user is an object. 
-                      If it's still a string, it will show "Name Loading..." */}
                   {typeof c.user === 'object' ? (c.user?.firstName || "Anonymous") : "Name Loading..."}
                 </p>
                 <p className="text-gray-700">{c.comment}</p>
@@ -135,7 +126,6 @@ function ArticleByID() {
           })}
         </div>
 
-        {/* comment form */}
         {user && (
           <form onSubmit={handleAddComment} className="flex flex-col gap-2">
             <textarea

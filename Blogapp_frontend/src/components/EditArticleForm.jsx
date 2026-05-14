@@ -32,7 +32,6 @@ function EditArticle() {
     formState: { errors },
   } = useForm();
 
-  // Prefill form with existing article data
   useEffect(() => {
     if (!article) return;
     setValue("title", article.title);
@@ -47,14 +46,12 @@ function EditArticle() {
       const articleId = id || article?._id;
 
       await axios.put(
-        "http://localhost:4000/author-api/articles",
+        `${import.meta.env.VITE_API_URL}/author-api/articles`,
         { articleId, ...data },
         { withCredentials: true }
       );
 
       toast.success("Article updated successfully!");
-
-      // Navigate back to the updated article page
       navigate(`/article/${articleId}`);
 
     } catch (err) {
@@ -76,7 +73,6 @@ function EditArticle() {
 
       <form onSubmit={handleSubmit(updateArticle)}>
 
-        {/* Title */}
         <div className={formGroup}>
           <label className={labelClass}>Title</label>
           <input
@@ -89,7 +85,6 @@ function EditArticle() {
           {errors.title && <p className={errorClass}>{errors.title.message}</p>}
         </div>
 
-        {/* Category */}
         <div className={formGroup}>
           <label className={labelClass}>Category</label>
           <select
@@ -105,7 +100,6 @@ function EditArticle() {
           {errors.category && <p className={errorClass}>{errors.category.message}</p>}
         </div>
 
-        {/* Content */}
         <div className={formGroup}>
           <label className={labelClass}>Content</label>
           <textarea

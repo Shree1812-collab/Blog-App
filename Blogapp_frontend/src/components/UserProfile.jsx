@@ -36,7 +36,7 @@ function UserProfile() {
       setLoading(true);
       try {
         const res = await axios.get(
-          "http://localhost:4000/user-api/articles",
+          `${import.meta.env.VITE_API_URL}/user-api/articles`,
           { withCredentials: true }
         );
         setArticles(res.data.payload);
@@ -62,10 +62,7 @@ function UserProfile() {
 
       {error && <p className={errorClass}>{error}</p>}
 
-      {/* Profile header — always shows because currentUser comes from DB via check-auth */}
       <div className="flex items-center justify-between mb-8">
-
-        {/* Left: avatar + name */}
         <div className="flex items-center gap-4">
           <img
             src={currentUser?.profileImageUrl || `https://ui-avatars.com/api/?name=${currentUser?.firstName}&background=7c3aed&color=fff`}
@@ -86,7 +83,6 @@ function UserProfile() {
           </div>
         </div>
 
-        {/* Right: logout */}
         <button
           className="bg-red-500 text-white px-5 py-1.5 rounded-md text-sm font-semibold hover:bg-red-600 transition-colors"
           onClick={onLogout}
