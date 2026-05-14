@@ -15,7 +15,7 @@ import {
   loadingClass,
 } from "../styles/common";
 
-function EditArticle() {
+function EditArticlePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -122,4 +122,4 @@ function EditArticle() {
   );
 }
 
-export default EditArticle;
+export default EditArticlePage;
