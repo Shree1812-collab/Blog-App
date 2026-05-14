@@ -25,11 +25,10 @@ function ArticleByID() {
   const [article, setArticle] = useState(location.state || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [comment, setComment] = useState(""); 
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
-    if (article && article.comments) return; 
-
+    // We fetch every time to ensure we get the populated comments from the backend
     const getArticle = async () => {
       setLoading(true);
       try {
@@ -61,7 +60,6 @@ function ArticleByID() {
 
     try {
       const commentPayload = {
-        user: user._id, 
         articleId: id,
         comment: comment,
       };
@@ -72,6 +70,7 @@ function ArticleByID() {
         { withCredentials: true }
       );
 
+      // The backend response now contains the fully populated article
       setArticle(res.data.payload);
       setComment("");
     } catch (err) {
@@ -108,6 +107,7 @@ function ArticleByID() {
       <h1 className={`${pageTitleClass} mt-3 mb-4`}>{article.title}</h1>
 
       <div className={`${mutedText} flex gap-4 mb-8`}>
+        {/* Author Population Check */}
         <span>✍️ {article.author?.firstName || "Author"}</span>
         <span>{formatDate(article.createdAt)}</span>
       </div>
@@ -118,12 +118,21 @@ function ArticleByID() {
       <div className="mt-10 border-t pt-6">
         <h3 className="text-xl font-bold mb-4">Comments</h3>
         <div className="space-y-4 mb-6">
-          {article.comments?.map((c, index) => (
-            <div key={index} className="p-3 bg-gray-50 rounded border">
-              <p className="text-sm font-bold text-blue-600">{c.user?.firstName || "User"}</p>
-              <p className="text-gray-700">{c.comment}</p>
-            </div>
-          ))}
+          {article.comments?.map((c, index) => {
+            // Check your browser console to see if 'user' is an object or a string
+            console.log(`Comment ${index} user data:`, c.user);
+            
+            return (
+              <div key={index} className="p-3 bg-gray-50 rounded border">
+                <p className="text-sm font-bold text-blue-600">
+                  {/* If backend populated correctly, c.user is an object. 
+                      If it's still a string, it will show "Name Loading..." */}
+                  {typeof c.user === 'object' ? (c.user?.firstName || "Anonymous") : "Name Loading..."}
+                </p>
+                <p className="text-gray-700">{c.comment}</p>
+              </div>
+            );
+          })}
         </div>
 
         {/* comment form */}
