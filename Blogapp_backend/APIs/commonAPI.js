@@ -10,7 +10,11 @@ export const commonRouter = exp.Router();
 commonRouter.post("/login", async (req, res, next) => {
   try {
     const { token, user } = await login(req.body);
-    res.status(200).json({ message: "login success", payload: user });
+    res.status(200).json({
+  message: "login success",
+  token,
+  payload: user
+});
   } catch (err) {
     next(err);
   }
