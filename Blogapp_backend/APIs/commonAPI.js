@@ -10,14 +10,17 @@ export const commonRouter = exp.Router();
 commonRouter.post("/login", async (req, res, next) => {
   try {
     const { token, user } = await login(req.body);
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,        // required for HTTPS
+      sameSite: "none",    // required for cross-domain cookies
+    });
     res.status(200).json({ message: "login success", payload: user });
   } catch (err) {
     next(err);
   }
 });
 
-// FIX: Fetches full user from DB so firstName, profileImageUrl, _id etc.
 // are all available in currentUser after a page refresh
 commonRouter.get(
   "/check-auth",
@@ -38,7 +41,11 @@ commonRouter.get(
 
 // Logout
 commonRouter.get("/logout", (req, res) => {
-  res.clearCookie("token", { httpOnly: true, secure: false, sameSite: "lax" });
+  res.clearCookie("token", {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
   res.status(200).json({ message: "logged out!" });
 });
 
