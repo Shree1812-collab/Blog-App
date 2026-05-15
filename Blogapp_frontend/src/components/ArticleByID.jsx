@@ -1,6 +1,6 @@
-import { useParams, useLocation, useNavigate } from "react-router";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { useAuth } from "../store/authStore";
 
 import {
@@ -31,9 +31,8 @@ function ArticleByID() {
     const getArticle = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/user-api/articles/${id}`,
-          { withCredentials: true }
+        const res = await axiosInstance.get(
+          `${import.meta.env.VITE_API_URL}/user-api/articles/${id}`
         );
         setArticle(res.data.payload);
       } catch (err) {
@@ -63,10 +62,9 @@ function ArticleByID() {
         comment: comment,
       };
 
-      const res = await axios.put(
+      const res = await axiosInstance.put(
         `${import.meta.env.VITE_API_URL}/user-api/articles`,
-        commentPayload,
-        { withCredentials: true }
+        commentPayload
       );
 
       setArticle(res.data.payload);
@@ -80,10 +78,9 @@ function ArticleByID() {
   const deleteArticle = async () => {
     if (!window.confirm("Are you sure?")) return;
     try {
-      await axios.patch(
+      await axiosInstance.patch(
         `${import.meta.env.VITE_API_URL}/author-api/articles/delete`,
-        { articleId: id },
-        { withCredentials: true }
+        { articleId: id }
       );
       navigate("/author-profile/articles");
     } catch (err) {
