@@ -123,7 +123,7 @@ function ArticleByID() {
           })}
         </div>
 
-        {user && (
+        {user?.role === "USER" && (
           <form onSubmit={handleAddComment} className="flex flex-col gap-2">
             <textarea
               className="border p-2 rounded"
