@@ -14,7 +14,7 @@ commonRouter.post("/login", async (req, res, next) => {
   message: "login success",
   token,
   payload: user
-});
+});a
   } catch (err) {
     next(err);
   }
