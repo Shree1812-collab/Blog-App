@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { toast } from "react-hot-toast";
 
 import {
@@ -45,10 +45,9 @@ function EditArticlePage() {
     try {
       const articleId = id || article?._id;
 
-      await axios.put(
+      await axiosInstance.put(
         `${import.meta.env.VITE_API_URL}/author-api/articles`,
-        { articleId, ...data },
-        { withCredentials: true }
+        { articleId, ...data }
       );
 
       toast.success("Article updated successfully!");

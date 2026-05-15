@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 
@@ -32,10 +32,9 @@ function WriteArticle() {
     setLoading(true);
     articleObj.author = currentUser._id;
     try {
-      await axios.post(
+      await axiosInstance.post(
         `${import.meta.env.VITE_API_URL}/author-api/articles`,
-        articleObj,
-        { withCredentials: true }
+        articleObj
       );
 
       toast.success("Article published successfully!");
