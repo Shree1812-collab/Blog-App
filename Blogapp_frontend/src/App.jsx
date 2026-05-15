@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./components/RootLayout";
+import { useEffect } from "react";
+import { useAuth } from "./store/authStore";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Home from "./components/Home";
@@ -15,6 +17,11 @@ import ErrorBoundary from "./components/ErrorBoundary"; //
 import { Toaster } from "react-hot-toast";
 
 function App() {
+  const checkAuth = useAuth((state) => state.checkAuth);
+
+useEffect(() => {
+  checkAuth();
+}, []);
   const routerObj = createBrowserRouter([
     {
       path: "/",
