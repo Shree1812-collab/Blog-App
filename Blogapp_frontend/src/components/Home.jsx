@@ -50,10 +50,6 @@ export default function Home() {
           <div className="hero-tag">✦ The Modern Writers' Platform</div>
           <h1>Where <em>great</em> ideas<br />find their voice.</h1>
           <p>PenPal is a home for curious minds — writers and readers who believe one good idea can change everything.</p>
-          <div className="hero-btns">
-            <button className="btn btn-p">Start Writing</button>
-            <button className="btn btn-g">Explore Articles</button>
-          </div>
         </div>
 
         <div className="section">
@@ -66,7 +62,6 @@ export default function Home() {
                 <h3>{post.title}</h3>
                 <p>{post.excerpt}</p>
                 <div className="card-meta">
-                  <span>{post.author}</span>
                   <span>{post.date}</span>
                 </div>
               </div>
