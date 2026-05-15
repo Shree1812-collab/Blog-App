@@ -22,30 +22,53 @@ A React frontend for a MERN stack blog application where users can read, write, 
 - Admin dashboard for managing users and content
 - Protected routes (only logged-in users can access certain pages)
 
-# Project Structure
+# Architecture 
+User (Browser)
+      |
+      v
+  React App (Frontend - Port 3000)
+      |
+      |-- React Router --> Page Components
+      |                        |
+      |                        |--> Home.jsx
+      |                        |--> Login.jsx / Register.jsx
+      |                        |--> ArticleByID.jsx
+      |                        |--> WriteArticle.jsx
+      |                        |--> AuthorDashboard.jsx
+      |                        |--> AdminDashboard.jsx
+      |
+      |-- Axios HTTP Request (GET / POST / PUT / DELETE)
+      |
+      v
+  Express Server (Backend - Port 5000)
+      |
+      |-- Auth Routes     --> /api/auth/login  /api/auth/register
+      |-- Article Routes  --> /api/articles
+      |-- User Routes     --> /api/users
+      |
+      v
+  MongoDB Database
+      |
+      |-- Users Collection
+      |-- Articles Collection
 
-Blogapp_frontend/
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   │   ├── Home.jsx              # Landing page
-│   │   ├── Header.jsx            # Navbar
-│   │   ├── Footer.jsx            # Footer
-│   │   ├── Login.jsx             # Login page
-│   │   ├── Register.jsx          # Register page
-│   │   ├── WriteArticle.jsx      # Create new article
-│   │   ├── ArticleByID.jsx       # Single article view
-│   │   ├── AuthorArticles.jsx    # Articles by one author
-│   │   ├── AuthorDashboard.jsx   # Author's personal dashboard
-│   │   ├── AuthorProfile.jsx     # Author profile page
-│   │   ├── UserDashboard.jsx     # Regular user dashboard
-│   │   ├── UserProfile.jsx       # User profile
-│   │   ├── EditArticlePage.jsx   # Edit existing article
-│   │   ├── AdminDashboard.jsx    # Admin controls
-│   │   ├── ProtectedRoute.jsx    # Route guard for auth
-│   │   ├── RootLayout.jsx        # Shared layout wrapper
-│   │   └── ErrorBoundary.jsx     # Error handling
-│   └── App.js
-├── package.json
-└── .env
+# Component Flow
+RootLayout.jsx  (wraps everything)
+      |
+      |-- Header.jsx  (Navbar - shown on all pages)
+      |
+      |-- ProtectedRoute.jsx
+      |         |
+      |         |--(logged in)--> AuthorDashboard / AdminDashboard / WriteArticle
+      |         |
+      |         |--(not logged in)--> redirect to Login.jsx
+      |
+      |-- Public Pages
+      |         |
+      |         |--> Home.jsx --> ArticleByID.jsx
+      |         |--> Login.jsx / Register.jsx
+      |         |--> AuthorProfile.jsx --> AuthorArticles.jsx
+      |
+      |-- Footer.jsx  (shown on all pages)
+      |
+      |-- ErrorBoundary.jsx  (catches any crashes)
