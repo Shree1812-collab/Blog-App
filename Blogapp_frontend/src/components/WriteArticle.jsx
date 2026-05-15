@@ -83,6 +83,8 @@ function WriteArticle() {
             <option value="technology">Technology</option>
             <option value="programming">Programming</option>
             <option value="ai">AI</option>
+            <option value="ai">Culture</option>
+            <option value="ai">Design</option>
             <option value="web-development">Web Development</option>
           </select>
           {errors.category && <p className={errorClass}>{errors.category.message}</p>}
